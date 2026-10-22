@@ -1,17 +1,20 @@
 
 /* =========================================
    1. GAME SETTINGS
-   Edit these numbers to change your game.
+   Change these values to customize gameplay.
 ========================================= */
 
 const SETTINGS = {
-  startingTime: 60,       // Length of the game in seconds
-  startingHealth: 100,    // Ship's starting health
-  waterPerIce: 10,        // Water gained per shot
-  waterNeeded: 50,        // Water needed to launch
-  pointsPerIce: 10,       // Points for shooting ice
-  pointsPerDelivery: 100, // Points for delivering water
-  damagePerHit: 20        // Health lost per hit
+  startingTime: 60,
+  startingHealth: 100,
+
+  waterPerIce: 10,
+  waterNeeded: 50,
+
+  pointsPerIce: 10,
+  pointsPerDelivery: 100,
+
+  damagePerHit: 20
 };
 
 
@@ -24,20 +27,21 @@ let score = 0;
 let timeLeft = SETTINGS.startingTime;
 let health = SETTINGS.startingHealth;
 let water = 0;
+
 let gameRunning = false;
 let timerId = null;
 
 
 /* =========================================
    3. FIND HTML ELEMENTS
-   These IDs must match your HTML.
+   The IDs must match index.html.
 ========================================= */
 
 const $ = (id) => document.getElementById(id);
 
 
 /* =========================================
-   4. UPDATE THE SCREEN
+   4. UPDATE THE DISPLAY
    Call this after changing game values.
 ========================================= */
 
@@ -46,54 +50,63 @@ function updateUI() {
   $("time").textContent = timeLeft;
   $("health").textContent = health;
   $("water").textContent = water;
+  $("water-target").textContent = SETTINGS.waterNeeded;
 
   // Update the health bar.
   $("health-fill").style.width = health + "%";
 
   // Update the water bar.
-  const waterPercent = (water / SETTINGS.waterNeeded) * 100;
+  const waterPercent =
+    (water / SETTINGS.waterNeeded) * 100;
+
   $("water-fill").style.width = waterPercent + "%";
 
-  // The player can only launch with enough water.
+  // Enable launching only when enough water is collected.
   $("launch-button").disabled =
     !gameRunning || water < SETTINGS.waterNeeded;
 }
 
 
-// Display feedback to the player.
+// Display a message to the player.
 function showMessage(message) {
   $("message").textContent = message;
 }
 
 
 /* =========================================
-   5. START AND RESET THE GAME
+   5. START OR RESTART THE GAME
 ========================================= */
 
 function startGame() {
-  // Stop any previous countdown.
+  // Stop an old timer before starting a new one.
   clearInterval(timerId);
+  timerId = null;
 
   // Reset every game value.
   score = 0;
   timeLeft = SETTINGS.startingTime;
   health = SETTINGS.startingHealth;
   water = 0;
+
   gameRunning = true;
 
-  // Show the gameplay screen.
+  // Hide the title screen and show gameplay.
   $("title-screen").classList.add("hidden");
-  $("end-screen").classList.add("hidden");
-  $("play-screen").classList.remove("hidden");
+  $("game-layout").classList.remove("hidden");
 
-  showMessage("Mission started! Collect water for Earth.");
+  $("play-screen").classList.remove("hidden");
+  $("end-screen").classList.add("hidden");
+
+  showMessage("Mission started! Collect enough water.");
+
   updateUI();
 
-  // Countdown: runs once every second.
+  // Start the countdown.
   timerId = setInterval(function () {
     if (!gameRunning) return;
 
     timeLeft--;
+
     updateUI();
 
     if (timeLeft <= 0) {
@@ -104,22 +117,34 @@ function startGame() {
 
 
 /* =========================================
-   6. SHOOT ICE
+   6. SHOOT ICE AND COLLECT WATER
 ========================================= */
 
 function shootIce() {
+  // Ignore clicks if the game is not active.
   if (!gameRunning) return;
 
-  // Collect water without exceeding the target amount.
+  // Check whether the water tank is already full.
+  if (water >= SETTINGS.waterNeeded) {
+    showMessage("Water tank full! Deliver water to Earth.");
+    return;
+  }
+
+  // Add water without exceeding the target.
   water = Math.min(
     SETTINGS.waterNeeded,
     water + SETTINGS.waterPerIce
   );
 
-  // Award points.
+  // Award points for breaking ice.
   score += SETTINGS.pointsPerIce;
 
-  showMessage("Ice destroyed! Water collected.");
+  if (water >= SETTINGS.waterNeeded) {
+    showMessage("Water tank full! Launch your delivery!");
+  } else {
+    showMessage("Ice destroyed! Water collected.");
+  }
+
   updateUI();
 }
 
@@ -131,7 +156,7 @@ function shootIce() {
 function launchWater() {
   if (!gameRunning) return;
 
-  // Prevent launching without enough water.
+  // The player needs enough water to launch.
   if (water < SETTINGS.waterNeeded) {
     showMessage("Collect more water before launching!");
     return;
@@ -139,12 +164,9 @@ function launchWater() {
 
   // Award delivery points.
   score += SETTINGS.pointsPerDelivery;
-  water = 0;
 
-  updateUI();
-
-  // One successful delivery wins this version.
-  endGame(true, "Clean water delivered to Earth!");
+  // End the game with a successful delivery.
+  endGame(true, "You successfully delivered clean water to Earth!");
 }
 
 
@@ -155,62 +177,81 @@ function launchWater() {
 function takeDamage() {
   if (!gameRunning) return;
 
-  // Health cannot go below zero.
+  // Reduce health without going below zero.
   health = Math.max(
     0,
     health - SETTINGS.damagePerHit
   );
 
+  if (health <= 0) {
+    updateUI();
+    endGame(false, "Your ship ran out of health.");
+    return;
+  }
+
   showMessage("Ice impact! Protect your ship!");
   updateUI();
-
-  if (health <= 0) {
-    endGame(false, "Your ship ran out of health.");
-  }
 }
 
 
 /* =========================================
-   9. END THE GAME
+   9. WIN OR LOSE
 ========================================= */
 
 function endGame(won, message) {
-  // Prevent multiple endings.
+  // Prevent the game from ending multiple times.
   if (!gameRunning) return;
 
   gameRunning = false;
-  clearInterval(timerId);
 
-  // Hide gameplay and show the ending screen.
+  // Stop the countdown.
+  clearInterval(timerId);
+  timerId = null;
+
+  // Keep the HUD visible but replace gameplay with the ending.
+  $("game-layout").classList.remove("hidden");
   $("play-screen").classList.add("hidden");
   $("end-screen").classList.remove("hidden");
 
-  // Change the ending message.
-  $("end-title").textContent =
-    won ? "Mission Complete!" : "Mission Failed!";
+  // Display the appropriate ending.
+  $("end-title").textContent = won
+    ? "MISSION COMPLETE!"
+    : "MISSION FAILED!";
 
   $("end-message").textContent = message;
+  $("final-score").textContent = score;
 
-  showMessage("Final score: " + score);
+  showMessage(
+    won
+      ? "Great work! You helped deliver clean water."
+      : "Mission over. You can try again!"
+  );
+
   updateUI();
 }
 
 
 /* =========================================
-   10. CONNECT BUTTONS TO ACTIONS
+   10. CONNECT BUTTONS TO FUNCTIONS
 ========================================= */
 
+// Title screen.
 $("start-button").addEventListener("click", startGame);
+
+// Restart and replay.
 $("restart-button").addEventListener("click", startGame);
 $("play-again-button").addEventListener("click", startGame);
 
+// Gameplay actions.
 $("shoot-button").addEventListener("click", shootIce);
 $("launch-button").addEventListener("click", launchWater);
 $("danger-button").addEventListener("click", takeDamage);
 
 
 /* =========================================
-   11. INITIAL SCREEN UPDATE
+   11. INITIALIZE THE GAME
 ========================================= */
 
+// The title screen is visible by default.
+// The game layout remains hidden until Start is clicked.
 updateUI();

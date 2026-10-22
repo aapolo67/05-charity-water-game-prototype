@@ -1,30 +1,25 @@
-/* Charity: water Brand Colors
 
-Primary Colors:
-- Yellow:     #FFC907
-- Blue:       #2E9DF7
+/* =========================================
+   1. GAME SETTINGS: COLORS
+   Change these variables to restyle the game.
+========================================= */
 
-Secondary Colors:
-- Light Blue: #8BD1CB
-- Green:      #4FCB53
-- Orange:     #FF902A
-- Red:        #F5402C
-- Dark Green: #159A48
-- Pink:       #F16061
-
-*/
-
-
-/* 1. COLORS: Change these to customize the whole game */
 :root {
   --space: #1d1d1d;
+  --space-light: #343434;
   --panel: #777777;
   --off-white: #eeeeee;
-  --water-blue: #4ba3e3;
-  --charity-yellow: #ffcf36;
+  --yellow: #ffcf36;
+  --blue: #4ba3e3;
+  --red: #e76f51;
+  --text-dark: #222222;
 }
 
-/* 2. BASIC PAGE STYLING */
+
+/* =========================================
+   2. GENERAL PAGE STYLING
+========================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -32,91 +27,27 @@ Secondary Colors:
 body {
   margin: 0;
   padding: 20px;
+  min-height: 100vh;
   background: var(--space);
   color: var(--off-white);
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-h1 {
-  text-align: center;
-  letter-spacing: 2px;
-}
-
-/* 3. GAME LAYOUT */
-.game-layout {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-/* 4. LEFT PANEL: SCORE, TIME, HEALTH, WATER */
-.hud {
-  padding: 20px;
-  background: var(--panel);
-  border: 1px solid #999;
-  border-radius: 8px;
-}
-
-.stat {
-  margin-bottom: 24px;
-}
-
-/* 5. HEALTH AND WATER BARS */
-.bar {
-  height: 14px;
-  margin-top: 8px;
-  background: #333;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.bar-fill {
-  height: 100%;
-  width: 100%;
-  background: var(--water-blue);
-  transition: width 0.3s ease;
-}
-
-#health-fill {
-  background: #e76f51;
-}
-
-/* 6. MAIN GAME AREA */
-.game-area {
-  min-height: 500px;
-  padding: 24px;
-  background: #d9d9d9;
-  color: #222;
-  border: 2px solid var(--off-white);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  text-align: center;
-}
-
-/* 7. EARTH PLACEHOLDER */
-.earth {
-  font-size: 100px;
-}
-
-/* 8. BUTTONS */
 button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 5px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
   background: var(--off-white);
   color: var(--space);
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s, transform 0.2s;
 }
 
-button:hover {
-  background: var(--charity-yellow);
+button:hover:not(:disabled) {
+  background: var(--yellow);
+  transform: translateY(-2px);
 }
 
 button:disabled {
@@ -124,45 +55,357 @@ button:disabled {
   cursor: not-allowed;
 }
 
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+
+/* =========================================
+   3. TITLE SCREEN
+========================================= */
+
+.title-screen {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  text-align: center;
+  background:
+    radial-gradient(
+      ellipse at center,
+      var(--space-light) 0%,
+      var(--space) 75%
+    );
+}
+
+.title-content {
+  width: 100%;
+  max-width: 750px;
+}
+
+.eyebrow {
+  margin-bottom: 20px;
+  color: var(--yellow);
+  font-size: 12px;
+  letter-spacing: 4px;
+}
+
+.title-screen h1 {
+  margin: 0;
+  font-size: clamp(30px, 6vw, 60px);
+  line-height: 1.15;
+  letter-spacing: 2px;
+}
+
+.title-screen h1 span {
+  color: var(--yellow);
+}
+
+.title-earth {
+  margin: 25px 0;
+  font-size: clamp(90px, 18vw, 160px);
+  filter: drop-shadow(0 0 25px #4ba3e355);
+  animation: earth-float 3s ease-in-out infinite;
+}
+
+.title-description {
+  max-width: 440px;
+  margin: 0 auto 30px;
+  color: #cccccc;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.start-button {
+  min-width: 220px;
+  padding: 17px 24px;
+  border: 2px solid var(--yellow);
+  border-radius: 3px;
+  background: var(--yellow);
+  color: var(--space);
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.title-footer {
+  margin-top: 35px;
+  color: #999999;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+
+/* Earth floats gently on the title screen. */
+@keyframes earth-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+
+/* =========================================
+   4. MAIN GAME LAYOUT
+========================================= */
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================
+   5. LEFT PANEL / HUD
+========================================= */
+
+.hud {
+  align-self: start;
+  padding: 22px;
+  border: 1px solid #999999;
+  border-radius: 8px;
+  background: var(--panel);
+  color: #ffffff;
+}
+
+.hud-title {
+  margin-top: 0;
+  margin-bottom: 28px;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.stat {
+  margin-bottom: 25px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.stat > span {
+  float: right;
+}
+
+.stat-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+
+/* =========================================
+   6. HEALTH AND WATER BARS
+========================================= */
+
+.bar {
+  width: 100%;
+  height: 14px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #333333;
+}
+
+.bar-fill {
+  width: 100%;
+  height: 100%;
+  transition: width 0.25s ease;
+}
+
+.health-fill {
+  background: var(--red);
+}
+
+.water-fill {
+  background: var(--blue);
+}
+
+.secondary-button {
+  width: 100%;
+  margin-top: 5px;
+}
+
+
+/* =========================================
+   7. MAIN GAME AREA
+========================================= */
+
+.game-area {
+  display: flex;
+  min-width: 0;
+  min-height: 550px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  background: #d9d9d9;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+.play-screen,
+.end-screen {
+  width: 100%;
+}
+
+.dark-eyebrow {
+  color: #666666;
+}
+
+.game-area h2 {
+  margin-top: 0;
+}
+
+.game-earth {
+  margin: 25px 0;
+  font-size: clamp(80px, 12vw, 130px);
+  filter: drop-shadow(0 5px 8px #00000022);
+}
+
+.instructions {
+  max-width: 420px;
+  margin: 20px auto;
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   8. GAME BUTTONS
+========================================= */
+
 .actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
+  margin-top: 25px;
 }
 
-/* 9. HIDE SCREENS THAT ARE NOT ACTIVE */
-.hidden {
-  display: none !important;
+.danger-button {
+  border-color: var(--red);
 }
 
-/* 10. MOBILE LAYOUT */
-@media (max-width: 650px) {
+.message {
+  min-height: 24px;
+  margin: 25px 0 0;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   9. END SCREEN
+========================================= */
+
+.end-earth {
+  margin: 15px 0;
+  font-size: 85px;
+}
+
+.end-screen h2 {
+  font-size: clamp(24px, 4vw, 36px);
+}
+
+#end-message {
+  line-height: 1.6;
+}
+
+.charity-link {
+  margin-top: 30px;
+  font-size: 13px;
+}
+
+.charity-link a {
+  color: #245f8e;
+  font-weight: bold;
+}
+
+
+/* =========================================
+   10. MOBILE LAYOUT
+========================================= */
+
+@media (max-width: 700px) {
   body {
     padding: 10px;
   }
 
+  .title-screen {
+    min-height: 85vh;
+    padding: 20px 10px;
+  }
+
+  .eyebrow {
+    letter-spacing: 2px;
+    line-height: 1.6;
+  }
+
+  .title-description {
+    font-size: 15px;
+  }
+
+  .title-footer {
+    letter-spacing: 2px;
+  }
+
   .game-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin: 10px auto;
   }
 
   .hud {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+    padding: 15px;
+  }
+
+  .hud-title {
+    grid-column: 1 / -1;
+    margin-bottom: 5px;
   }
 
   .stat {
     margin-bottom: 8px;
   }
 
-  .game-area {
-    min-height: 400px;
-    padding: 16px;
+  .secondary-button {
+    align-self: center;
   }
 
-  .earth {
-    font-size: 80px;
+  .game-area {
+    min-height: 450px;
+    padding: 20px 12px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .actions button {
+    max-width: 100%;
+  }
+
+  .game-earth {
+    font-size: 90px;
   }
 }
-
