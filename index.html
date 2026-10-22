@@ -1,13 +1,220 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Water Game</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H2O Space Cascade</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <h1>Welcome to the Charity Water Game Prototype</h1>
-    <script src="script.js"></script>
+  <header>
+    <h1>H2O Space Cascade</h1>
+    <p>Collect ice. Deliver water. Help Earth.</p>
+  </header>
+
+  <main class="game-layout">
+    <aside class="hud" aria-label="Game statistics">
+      <div class="stat">SCORE: <span id="score">0</span></div>
+      <div class="stat">TIME: <span id="time">60</span>s</div>
+
+      <div class="stat">
+        SHIP HEALTH: <span id="health">100</span>%
+        <div class="bar">
+          <div class="bar-fill" id="health-fill"></div>
+        </div>
+      </div>
+
+      <div class="stat">
+        WATER: <span id="water">0</span>/50
+        <div class="bar">
+          <div class="bar-fill" id="water-fill"></div>
+        </div>
+      </div>
+
+      <button id="restart-button">Restart</button>
+    </aside>
+
+    <section class="game-area" aria-label="Game screen">
+      <div id="title-screen">
+        <h2>Mission: Save the World</h2>
+        <p>Break ice asteroids and deliver clean water to Earth.</p>
+        <button id="start-button">Start Mission</button>
+      </div>
+
+      <div id="play-screen" class="hidden">
+        <div class="earth" aria-label="Earth">🌎</div>
+        <h2>Earth Target</h2>
+        <p id="target">Target: Earth</p>
+
+        <div class="actions">
+          <button id="shoot-button">❄️ Shoot Ice (+10 water)</button>
+          <button id="launch-button" disabled>🚀 Deliver Water</button>
+          <button id="danger-button">⚠️ Incoming Ice!</button>
+        </div>
+      </div>
+
+      <div id="end-screen" class="hidden">
+        <h2 id="end-title">Mission Complete</h2>
+        <p id="end-message"></p>
+        <button id="play-again-button">Play Again</button>
+        <p>
+          Learn more about clean water:
+          <a href="https://www.charitywater.org/"
+             target="_blank" rel="noopener noreferrer">
+            charity: water
+          </a>
+        </p>
+      </div>
+
+      <p id="message" role="status" aria-live="polite">
+        Ready for launch?
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // 3. EDIT THESE SETTINGS TO CHANGE THE GAME
+    const SETTINGS = {
+      startingTime: 60,
+      startingHealth: 100,
+      waterPerIce: 10,
+      waterNeeded: 50,
+      pointsPerIce: 10,
+      pointsPerDelivery: 100,
+      damagePerHit: 20
+    };
+
+    // 4. ALL CHANGEABLE GAME VALUES LIVE HERE
+    let score = 0;
+    let timeLeft = SETTINGS.startingTime;
+    let health = SETTINGS.startingHealth;
+    let water = 0;
+    let gameRunning = false;
+    let timerId = null;
+
+    // 5. FIND HTML ELEMENTS
+    const $ = (id) => document.getElementById(id);
+
+    // 6. UPDATE THE DISPLAY AFTER A GAME ACTION
+    function updateUI() {
+      $("score").textContent = score;
+      $("time").textContent = timeLeft;
+      $("health").textContent = health;
+      $("water").textContent = water;
+
+      $("health-fill").style.width = health + "%";
+      $("water-fill").style.width =
+        (water / SETTINGS.waterNeeded * 100) + "%";
+
+      $("launch-button").disabled =
+        !gameRunning || water < SETTINGS.waterNeeded;
+    }
+
+    function showMessage(text) {
+      $("message").textContent = text;
+    }
+
+    // 7. START OR RESTART THE GAME
+    function startGame() {
+      clearInterval(timerId);
+
+      score = 0;
+      timeLeft = SETTINGS.startingTime;
+      health = SETTINGS.startingHealth;
+      water = 0;
+      gameRunning = true;
+
+      $("title-screen").classList.add("hidden");
+      $("end-screen").classList.add("hidden");
+      $("play-screen").classList.remove("hidden");
+
+      showMessage("Mission started! Collect enough water.");
+      updateUI();
+
+      timerId = setInterval(() => {
+        if (!gameRunning) return;
+
+        timeLeft--;
+        updateUI();
+
+        if (timeLeft <= 0) {
+          endGame(false, "Time ran out. Try again!");
+        }
+      }, 1000);
+    }
+
+    // 8. SHOOT ICE AND COLLECT WATER
+    function shootIce() {
+      if (!gameRunning) return;
+
+      water = Math.min(
+        SETTINGS.waterNeeded,
+        water + SETTINGS.waterPerIce
+      );
+
+      score += SETTINGS.pointsPerIce;
+
+      showMessage("Ice destroyed! Water collected.");
+      updateUI();
+    }
+
+    // 9. DELIVER WATER TO EARTH
+    function launchWater() {
+      if (!gameRunning || water < SETTINGS.waterNeeded) return;
+
+      water = 0;
+      score += SETTINGS.pointsPerDelivery;
+
+      showMessage("Water delivered to Earth!");
+      updateUI();
+
+      // One successful delivery completes this starter game.
+      endGame(true, "You delivered clean water to Earth!");
+    }
+
+    // 10. SIMPLIFIED INCOMING ASTEROID / DAMAGE MECHANIC
+    function takeDamage() {
+      if (!gameRunning) return;
+
+      health = Math.max(0, health - SETTINGS.damagePerHit);
+
+      showMessage("Ice impact! Your ship has taken damage.");
+      updateUI();
+
+      if (health <= 0) {
+        endGame(false, "Your ship ran out of health.");
+      }
+    }
+
+    // 11. WIN OR LOSE
+    function endGame(won, message) {
+      if (!gameRunning) return;
+
+      gameRunning = false;
+      clearInterval(timerId);
+
+      $("play-screen").classList.add("hidden");
+      $("end-screen").classList.remove("hidden");
+
+      $("end-title").textContent =
+        won ? "Mission Complete!" : "Mission Failed";
+
+      $("end-message").textContent = message;
+      showMessage("Final score: " + score);
+      updateUI();
+    }
+
+    // 12. CONNECT BUTTONS TO FUNCTIONS
+    $("start-button").addEventListener("click", startGame);
+    $("restart-button").addEventListener("click", startGame);
+    $("play-again-button").addEventListener("click", startGame);
+    $("shoot-button").addEventListener("click", shootIce);
+    $("launch-button").addEventListener("click", launchWater);
+    $("danger-button").addEventListener("click", takeDamage);
+
+    updateUI();
+  </script>
 </body>
 </html>

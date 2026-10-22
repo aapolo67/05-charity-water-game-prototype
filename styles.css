@@ -13,3 +13,156 @@ Secondary Colors:
 - Pink:       #F16061
 
 */
+
+
+/* 1. COLORS: Change these to customize the whole game */
+:root {
+  --space: #1d1d1d;
+  --panel: #777777;
+  --off-white: #eeeeee;
+  --water-blue: #4ba3e3;
+  --charity-yellow: #ffcf36;
+}
+
+/* 2. BASIC PAGE STYLING */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: var(--space);
+  color: var(--off-white);
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* 3. GAME LAYOUT */
+.game-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 4. LEFT PANEL: SCORE, TIME, HEALTH, WATER */
+.hud {
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid #999;
+  border-radius: 8px;
+}
+
+.stat {
+  margin-bottom: 24px;
+}
+
+/* 5. HEALTH AND WATER BARS */
+.bar {
+  height: 14px;
+  margin-top: 8px;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--water-blue);
+  transition: width 0.3s ease;
+}
+
+#health-fill {
+  background: #e76f51;
+}
+
+/* 6. MAIN GAME AREA */
+.game-area {
+  min-height: 500px;
+  padding: 24px;
+  background: #d9d9d9;
+  color: #222;
+  border: 2px solid var(--off-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+}
+
+/* 7. EARTH PLACEHOLDER */
+.earth {
+  font-size: 100px;
+}
+
+/* 8. BUTTONS */
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 5px;
+  background: var(--off-white);
+  color: var(--space);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: var(--charity-yellow);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 9. HIDE SCREENS THAT ARE NOT ACTIVE */
+.hidden {
+  display: none !important;
+}
+
+/* 10. MOBILE LAYOUT */
+@media (max-width: 650px) {
+  body {
+    padding: 10px;
+  }
+
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hud {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .stat {
+    margin-bottom: 8px;
+  }
+
+  .game-area {
+    min-height: 400px;
+    padding: 16px;
+  }
+
+  .earth {
+    font-size: 80px;
+  }
+}
+
