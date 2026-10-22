@@ -37,7 +37,30 @@ let timerId = null;
    The IDs must match index.html.
 ========================================= */
 
-const $ = (id) => document.getElementById(id);
+const elements = {
+  titleScreen: document.getElementById("title-screen"),
+  gameLayout: document.getElementById("game-layout"),
+  playScreen: document.getElementById("play-screen"),
+  endScreen: document.getElementById("end-screen"),
+  actionRail: document.getElementById("action-rail"),
+  score: document.getElementById("score"),
+  time: document.getElementById("time"),
+  health: document.getElementById("health"),
+  water: document.getElementById("water"),
+  waterTarget: document.getElementById("water-target"),
+  healthFill: document.getElementById("health-fill"),
+  waterFill: document.getElementById("water-fill"),
+  launchButton: document.getElementById("launch-button"),
+  message: document.getElementById("message"),
+  endTitle: document.getElementById("end-title"),
+  endMessage: document.getElementById("end-message"),
+  finalScore: document.getElementById("final-score"),
+  startButton: document.getElementById("start-button"),
+  restartButton: document.getElementById("restart-button"),
+  playAgainButton: document.getElementById("play-again-button"),
+  shootButton: document.getElementById("shoot-button"),
+  dangerButton: document.getElementById("danger-button")
+};
 
 
 /* =========================================
@@ -46,30 +69,30 @@ const $ = (id) => document.getElementById(id);
 ========================================= */
 
 function updateUI() {
-  $("score").textContent = score;
-  $("time").textContent = timeLeft;
-  $("health").textContent = health;
-  $("water").textContent = water;
-  $("water-target").textContent = SETTINGS.waterNeeded;
+  elements.score.textContent = score;
+  elements.time.textContent = timeLeft;
+  elements.health.textContent = health;
+  elements.water.textContent = water;
+  elements.waterTarget.textContent = SETTINGS.waterNeeded;
 
   // Update the health bar.
-  $("health-fill").style.width = `${health}%`;
+  elements.healthFill.style.width = `${health}%`;
 
   // Update the water bar.
   const waterPercent =
     (water / SETTINGS.waterNeeded) * 100;
 
-  $("water-fill").style.width = `${waterPercent}%`;
+  elements.waterFill.style.width = `${waterPercent}%`;
 
   // Enable launching only when enough water is collected.
-  $("launch-button").disabled =
+  elements.launchButton.disabled =
     !gameRunning || water < SETTINGS.waterNeeded;
 }
 
 
 // Display a message to the player.
 function showMessage(message) {
-  $("message").textContent = message;
+  elements.message.textContent = message;
 }
 
 
@@ -91,12 +114,12 @@ function startGame() {
   gameRunning = true;
 
   // Hide the title screen and show gameplay.
-  $("title-screen").classList.add("hidden");
-  $("game-layout").classList.remove("hidden");
+  elements.titleScreen.classList.add("hidden");
+  elements.gameLayout.classList.remove("hidden");
 
-  $("play-screen").classList.remove("hidden");
-  $("end-screen").classList.add("hidden");
-  $("action-rail").classList.remove("hidden");
+  elements.playScreen.classList.remove("hidden");
+  elements.endScreen.classList.add("hidden");
+  elements.actionRail.classList.remove("hidden");
 
   showMessage("Mission started! Collect enough water.");
 
@@ -210,18 +233,18 @@ function endGame(won, message) {
   timerId = null;
 
   // Keep the HUD visible but replace gameplay with the ending.
-  $("game-layout").classList.remove("hidden");
-  $("play-screen").classList.add("hidden");
-  $("end-screen").classList.remove("hidden");
-  $("action-rail").classList.add("hidden");
+  elements.gameLayout.classList.remove("hidden");
+  elements.playScreen.classList.add("hidden");
+  elements.endScreen.classList.remove("hidden");
+  elements.actionRail.classList.add("hidden");
 
   // Display the appropriate ending.
-  $("end-title").textContent = won
+  elements.endTitle.textContent = won
     ? "MISSION COMPLETE!"
     : "MISSION FAILED!";
 
-  $("end-message").textContent = message;
-  $("final-score").textContent = score;
+  elements.endMessage.textContent = message;
+  elements.finalScore.textContent = score;
 
   showMessage(
     won
@@ -238,16 +261,16 @@ function endGame(won, message) {
 ========================================= */
 
 // Title screen.
-$("start-button").addEventListener("click", startGame);
+elements.startButton.addEventListener("click", startGame);
 
 // Restart and replay.
-$("restart-button").addEventListener("click", startGame);
-$("play-again-button").addEventListener("click", startGame);
+elements.restartButton.addEventListener("click", startGame);
+elements.playAgainButton.addEventListener("click", startGame);
 
 // Gameplay actions.
-$("shoot-button").addEventListener("click", shootIce);
-$("launch-button").addEventListener("click", launchWater);
-$("danger-button").addEventListener("click", takeDamage);
+elements.shootButton.addEventListener("click", shootIce);
+elements.launchButton.addEventListener("click", launchWater);
+elements.dangerButton.addEventListener("click", takeDamage);
 
 
 /* =========================================

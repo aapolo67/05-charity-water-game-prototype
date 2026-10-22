@@ -6,11 +6,11 @@
 
 :root {
   /* Main colors */
-  --color-space: #101827;
+  --color-space: #000000;
   --color-space-light: #1d3557;
   --color-panel: #243b53;
   --color-surface: #f5f7fa;
-  --color-surface-muted: #d9e2ec;
+  --color-surface-muted: #d2d2d2;
   --color-text: #102a43;
   --color-text-light: #f5f7fa;
   --color-text-muted: #627d98;
@@ -24,6 +24,7 @@
   --color-rail: #777777;
 
   /* Component settings */
+  /* Arial matches the simple sans-serif lettering in the wireframe. */
   --page-font: Arial, Helvetica, sans-serif;
   --corner-radius: 8px;
   --button-radius: 4px;
@@ -54,8 +55,9 @@ button {
   border-radius: var(--button-radius);
   background: var(--color-surface);
   color: var(--color-space);
+  font-family: inherit;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 400;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
 }
@@ -85,8 +87,9 @@ a:focus-visible {
   height: 100dvh;
   min-height: 0;
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
-  gap: 45px;
+  grid-template-columns: 210px minmax(0, 620px);
+  justify-content: center;
+  gap: clamp(45px, 6vw, 85px);
   align-items: center;
   padding: clamp(18px, 4vh, 40px) clamp(20px, 8vw, 120px);
   overflow: hidden;
@@ -98,6 +101,7 @@ a:focus-visible {
   display: flex;
   min-height: 0;
   flex-direction: column;
+  position: relative;
   padding: 22px 14px;
   background: var(--color-rail);
   color: var(--color-text-light);
@@ -110,16 +114,32 @@ a:focus-visible {
   filter: brightness(0) invert(1);
 }
 
-.rail-title {
+.title-screen .rail-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 60px;
+  left: 82%;
   margin: 0;
-  font-size: 21px;
-  line-height: 1.45;
-  letter-spacing: 4px;
+  color: var(--color-text-light);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.rail-title span {
+  width: 1em;
+  word-break: break-all;
 }
 
 .rail-copy {
   margin-top: auto;
   font-size: 13px;
+  font-weight: 400;
   line-height: 1.35;
 }
 
@@ -140,7 +160,9 @@ a:focus-visible {
 
 .title-content {
   width: 100%;
-  max-width: 850px;
+  max-width: 620px;
+  align-self: stretch;
+  justify-self: center;
   padding: clamp(20px, 4vh, 60px) 20px;
   background: var(--color-surface-muted);
   color: var(--color-text);
@@ -161,6 +183,7 @@ a:focus-visible {
 .title-screen h1 {
   margin: 0;
   font-size: clamp(30px, 6vw, 60px);
+  font-weight: 400;
   line-height: 1.15;
   letter-spacing: 2px;
 }
@@ -170,7 +193,7 @@ a:focus-visible {
 }
 
 .title-earth {
-  margin: clamp(12px, 2vh, 25px) 0;
+  margin: clamp(75px, 13vh, 140px) 0 clamp(12px, 2vh, 25px);
   font-size: clamp(70px, 16vh, 140px);
   filter: drop-shadow(0 0 25px var(--color-water));
   animation: earth-float 3s ease-in-out infinite;
@@ -179,33 +202,43 @@ a:focus-visible {
 .title-description {
   max-width: 440px;
   margin: 0 auto clamp(16px, 3vh, 30px);
+  text-align: center;
   color: var(--color-surface-muted);
   font-size: 17px;
   line-height: 1.6;
 }
 
 .start-card {
-  max-width: 490px;
-  margin: clamp(16px, 3vh, 35px) auto 0;
-  padding: 18px 20px 0;
+  position: relative;
+  width: min(82%, 420px);
+  max-width: 420px;
+  margin: clamp(35px, 7vh, 80px) 0 0;
+  padding: 14px 16px;
   background: var(--color-surface);
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .start-card p {
-  margin: 0 0 15px;
-  font-size: clamp(17px, 2vw, 25px);
+  width: 100%;
+  margin: 0;
+  font-size: clamp(14px, 1.5vw, 19px);
   line-height: 1.35;
+  text-align: center;
 }
 
 .start-button {
+  display: block;
   min-width: 220px;
+  margin: 18px auto 0;
   padding: 17px 24px;
   border: 2px solid var(--color-accent);
   border-radius: 3px;
   background: var(--color-accent);
   color: var(--color-space);
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 400;
   letter-spacing: 2px;
 }
 
@@ -214,6 +247,7 @@ a:focus-visible {
   color: var(--color-text-muted);
   font-size: 11px;
   letter-spacing: 3px;
+  text-align: center;
 }
 
 
@@ -235,12 +269,14 @@ a:focus-visible {
 
 .game-layout {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 0;
-  max-width: var(--content-width);
-  min-height: 100vh;
+  grid-template-columns: 210px minmax(0, 620px);
+  gap: clamp(45px, 6vw, 85px);
+  width: max-content;
+  max-width: 100%;
+  height: 100dvh;
+  min-height: 0;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: clamp(18px, 4vh, 40px) 0;
 }
 
 .hidden {
@@ -254,7 +290,8 @@ a:focus-visible {
 
 .hud {
   align-self: start;
-  min-height: 610px;
+  height: 100%;
+  min-height: 0;
   padding: 28px 22px;
   border: 0;
   border-radius: 0;
@@ -266,13 +303,14 @@ a:focus-visible {
   margin-top: 0;
   margin-bottom: 28px;
   font-size: 18px;
+  font-weight: 400;
   letter-spacing: 2px;
 }
 
 .stat {
   margin-bottom: 25px;
   font-size: 13px;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .stat > span {
@@ -325,13 +363,14 @@ a:focus-visible {
 ========================================= */
 
 .game-area {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 150px;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr auto;
-  gap: 24px;
   min-width: 0;
-  min-height: 610px;
-  padding: 24px 0 0 24px;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
   border: 0;
   border-radius: 0;
   background: var(--color-surface-muted);
@@ -342,15 +381,23 @@ a:focus-visible {
 .play-screen,
 .end-screen {
   width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 28px 24px;
+  background: transparent;
   align-self: center;
 }
 
 .actions {
+  display: flex;
   grid-column: 2;
   grid-row: 1;
   align-content: center;
   flex-direction: column;
-  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0 0;
 }
 
 .actions button {
@@ -359,12 +406,16 @@ a:focus-visible {
 
 .action-rail {
   display: flex;
-  grid-column: 2;
-  grid-row: 1;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -75px;
+  width: 150px;
   flex-direction: column;
   gap: 20px;
   justify-content: center;
-  padding-right: 24px;
+  padding: 0;
+  transform: translateY(-50%);
 }
 
 .action-rail button,
@@ -385,6 +436,11 @@ a:focus-visible {
   font-size: 16px;
 }
 
+.ice-preview strong,
+#final-score {
+  font-weight: 400;
+}
+
 .ice-preview span {
   color: var(--color-water);
   font-size: 24px;
@@ -400,6 +456,7 @@ a:focus-visible {
 
 .game-area h2 {
   margin-top: 0;
+  font-weight: 400;
 }
 
 .game-earth {
@@ -417,20 +474,7 @@ a:focus-visible {
 }
 
 
-/* =========================================
-   8. GAME BUTTONS
-========================================= */
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 25px;
-}
-
 .action-rail .actions {
-  display: flex;
   flex-direction: column;
   gap: 12px;
 }
@@ -442,10 +486,11 @@ a:focus-visible {
 .message {
   grid-column: 1 / -1;
   grid-row: 2;
+  color: var(--color-text-light);
   min-height: 24px;
   margin: 25px 0 0;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -461,6 +506,7 @@ a:focus-visible {
 
 .end-screen h2 {
   font-size: clamp(24px, 4vw, 36px);
+  font-weight: 400;
 }
 
 #end-message {
@@ -474,7 +520,7 @@ a:focus-visible {
 
 .charity-link a {
   color: var(--color-link);
-  font-weight: bold;
+  font-weight: 400;
 }
 
 
@@ -506,16 +552,20 @@ a:focus-visible {
     max-width: 125px;
   }
 
-  .rail-title,
   .rail-copy,
   .rail-label,
-  .menu-icon {
+  .menu-icon,
+  .rail-title {
     display: none;
   }
 
   .title-content {
     min-height: 0;
     padding: clamp(16px, 3vh, 32px) 12px;
+  }
+
+  .start-card {
+    width: min(90%, 360px);
   }
 
   .eyebrow {
@@ -536,11 +586,15 @@ a:focus-visible {
   .game-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
+    width: auto;
+    height: auto;
     margin: 0 auto;
     padding: 15px;
+    min-height: 100vh;
   }
 
   .hud {
+    height: auto;
     min-height: auto;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -563,6 +617,14 @@ a:focus-visible {
 
   .game-area {
     grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 550px;
+    padding: 0;
+  }
+
+  .play-screen,
+  .end-screen {
+    height: auto;
     min-height: 550px;
     padding: 20px 12px 12px;
   }
@@ -579,7 +641,10 @@ a:focus-visible {
   }
 
   .action-rail {
-    padding-right: 0;
+    position: static;
+    width: auto;
+    padding: 0;
+    transform: none;
   }
 
   .action-rail button,
