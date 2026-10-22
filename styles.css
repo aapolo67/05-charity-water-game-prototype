@@ -1,18 +1,33 @@
 
 /* =========================================
-   1. GAME SETTINGS: COLORS
-   Change these variables to restyle the game.
+   1. EDITABLE THEME
+   Change these variables to restyle the whole game.
 ========================================= */
 
 :root {
-  --space: #1d1d1d;
-  --space-light: #343434;
-  --panel: #777777;
-  --off-white: #eeeeee;
-  --yellow: #ffcf36;
-  --blue: #4ba3e3;
-  --red: #e76f51;
-  --text-dark: #222222;
+  /* Main colors */
+  --color-space: #101827;
+  --color-space-light: #1d3557;
+  --color-panel: #243b53;
+  --color-surface: #f5f7fa;
+  --color-surface-muted: #d9e2ec;
+  --color-text: #102a43;
+  --color-text-light: #f5f7fa;
+  --color-text-muted: #627d98;
+  --color-accent: #ffcf36;
+  --color-water: #4ba3e3;
+  --color-danger: #e76f51;
+  --color-track: #334e68;
+  --color-border: #bcccdc;
+  --color-link: #245f8e;
+  --color-shadow: #00000022;
+  --color-rail: #777777;
+
+  /* Component settings */
+  --page-font: Arial, Helvetica, sans-serif;
+  --corner-radius: 8px;
+  --button-radius: 4px;
+  --content-width: 1200px;
 }
 
 
@@ -26,19 +41,19 @@
 
 body {
   margin: 0;
-  padding: 20px;
+  padding: 0;
   min-height: 100vh;
-  background: var(--space);
-  color: var(--off-white);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-space);
+  color: var(--color-text-light);
+  font-family: var(--page-font);
 }
 
 button {
   padding: 12px 16px;
   border: 1px solid transparent;
-  border-radius: 4px;
-  background: var(--off-white);
-  color: var(--space);
+  border-radius: var(--button-radius);
+  background: var(--color-surface);
+  color: var(--color-space);
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
@@ -46,7 +61,7 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: var(--yellow);
+  background: var(--color-accent);
   transform: translateY(-2px);
 }
 
@@ -57,7 +72,7 @@ button:disabled {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--color-water);
   outline-offset: 3px;
 }
 
@@ -67,30 +82,80 @@ a:focus-visible {
 ========================================= */
 
 .title-screen {
-  min-height: 90vh;
-  display: flex;
+  height: 100dvh;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 45px;
   align-items: center;
-  justify-content: center;
-  padding: 30px 20px;
-  text-align: center;
-  background:
-    radial-gradient(
-      ellipse at center,
-      var(--space-light) 0%,
-      var(--space) 75%
-    );
+  padding: clamp(18px, 4vh, 40px) clamp(20px, 8vw, 120px);
+  overflow: hidden;
+  background: var(--color-space);
+}
+
+.title-rail {
+  align-self: stretch;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  padding: 22px 14px;
+  background: var(--color-rail);
+  color: var(--color-text-light);
+}
+
+.brand-logo {
+  width: 100%;
+  max-width: 145px;
+  margin-bottom: 18px;
+  filter: brightness(0) invert(1);
+}
+
+.rail-title {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.45;
+  letter-spacing: 4px;
+}
+
+.rail-copy {
+  margin-top: auto;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.rail-copy p {
+  margin: 0 0 24px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.rail-label {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 1px;
 }
 
 .title-content {
   width: 100%;
-  max-width: 750px;
+  max-width: 850px;
+  padding: clamp(20px, 4vh, 60px) 20px;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  text-align: center;
 }
 
 .eyebrow {
   margin-bottom: 20px;
-  color: var(--yellow);
+  color: var(--color-accent);
   font-size: 12px;
   letter-spacing: 4px;
+}
+
+.title-content .eyebrow {
+  color: var(--color-text-muted);
 }
 
 .title-screen h1 {
@@ -101,39 +166,52 @@ a:focus-visible {
 }
 
 .title-screen h1 span {
-  color: var(--yellow);
+  color: var(--color-accent);
 }
 
 .title-earth {
-  margin: 25px 0;
-  font-size: clamp(90px, 18vw, 160px);
-  filter: drop-shadow(0 0 25px #4ba3e355);
+  margin: clamp(12px, 2vh, 25px) 0;
+  font-size: clamp(70px, 16vh, 140px);
+  filter: drop-shadow(0 0 25px var(--color-water));
   animation: earth-float 3s ease-in-out infinite;
 }
 
 .title-description {
   max-width: 440px;
-  margin: 0 auto 30px;
-  color: #cccccc;
+  margin: 0 auto clamp(16px, 3vh, 30px);
+  color: var(--color-surface-muted);
   font-size: 17px;
   line-height: 1.6;
+}
+
+.start-card {
+  max-width: 490px;
+  margin: clamp(16px, 3vh, 35px) auto 0;
+  padding: 18px 20px 0;
+  background: var(--color-surface);
+}
+
+.start-card p {
+  margin: 0 0 15px;
+  font-size: clamp(17px, 2vw, 25px);
+  line-height: 1.35;
 }
 
 .start-button {
   min-width: 220px;
   padding: 17px 24px;
-  border: 2px solid var(--yellow);
+  border: 2px solid var(--color-accent);
   border-radius: 3px;
-  background: var(--yellow);
-  color: var(--space);
+  background: var(--color-accent);
+  color: var(--color-space);
   font-size: 15px;
   font-weight: bold;
   letter-spacing: 2px;
 }
 
 .title-footer {
-  margin-top: 35px;
-  color: #999999;
+  margin-top: clamp(15px, 3vh, 35px);
+  color: var(--color-text-muted);
   font-size: 11px;
   letter-spacing: 3px;
 }
@@ -157,10 +235,12 @@ a:focus-visible {
 
 .game-layout {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
-  gap: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 0;
+  max-width: var(--content-width);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px 0;
 }
 
 .hidden {
@@ -174,11 +254,12 @@ a:focus-visible {
 
 .hud {
   align-self: start;
-  padding: 22px;
-  border: 1px solid #999999;
-  border-radius: 8px;
-  background: var(--panel);
-  color: #ffffff;
+  min-height: 610px;
+  padding: 28px 22px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-rail);
+  color: var(--color-text-light);
 }
 
 .hud-title {
@@ -216,7 +297,7 @@ a:focus-visible {
   height: 14px;
   overflow: hidden;
   border-radius: 10px;
-  background: #333333;
+  background: var(--color-track);
 }
 
 .bar-fill {
@@ -226,11 +307,11 @@ a:focus-visible {
 }
 
 .health-fill {
-  background: var(--red);
+  background: var(--color-danger);
 }
 
 .water-fill {
-  background: var(--blue);
+  background: var(--color-water);
 }
 
 .secondary-button {
@@ -244,27 +325,77 @@ a:focus-visible {
 ========================================= */
 
 .game-area {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  grid-template-rows: 1fr auto;
+  gap: 24px;
   min-width: 0;
-  min-height: 550px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 25px;
-  border: 2px solid #ffffff;
-  border-radius: 8px;
-  background: #d9d9d9;
-  color: var(--text-dark);
+  min-height: 610px;
+  padding: 24px 0 0 24px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
   text-align: center;
 }
 
 .play-screen,
 .end-screen {
   width: 100%;
+  align-self: center;
+}
+
+.actions {
+  grid-column: 2;
+  grid-row: 1;
+  align-content: center;
+  flex-direction: column;
+  margin: 0;
+}
+
+.actions button {
+  width: 100%;
+}
+
+.action-rail {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  padding-right: 24px;
+}
+
+.action-rail button,
+.ice-preview {
+  min-height: 130px;
+  padding: 20px 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: left;
+}
+
+.ice-preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.ice-preview span {
+  color: var(--color-water);
+  font-size: 24px;
+}
+
+.ice-preview small {
+  line-height: 1.4;
 }
 
 .dark-eyebrow {
-  color: #666666;
+  color: var(--color-text-muted);
 }
 
 .game-area h2 {
@@ -274,13 +405,13 @@ a:focus-visible {
 .game-earth {
   margin: 25px 0;
   font-size: clamp(80px, 12vw, 130px);
-  filter: drop-shadow(0 5px 8px #00000022);
+  filter: drop-shadow(0 5px 8px var(--color-shadow));
 }
 
 .instructions {
   max-width: 420px;
   margin: 20px auto;
-  color: #555555;
+  color: var(--color-text-muted);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -298,11 +429,19 @@ a:focus-visible {
   margin-top: 25px;
 }
 
+.action-rail .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .danger-button {
-  border-color: var(--red);
+  border-color: var(--color-danger);
 }
 
 .message {
+  grid-column: 1 / -1;
+  grid-row: 2;
   min-height: 24px;
   margin: 25px 0 0;
   font-size: 14px;
@@ -334,7 +473,7 @@ a:focus-visible {
 }
 
 .charity-link a {
-  color: #245f8e;
+  color: var(--color-link);
   font-weight: bold;
 }
 
@@ -345,12 +484,38 @@ a:focus-visible {
 
 @media (max-width: 700px) {
   body {
-    padding: 10px;
+    padding: 0;
   }
 
   .title-screen {
-    min-height: 85vh;
-    padding: 20px 10px;
+    display: flex;
+    height: 100dvh;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .title-rail {
+    width: 100%;
+    min-height: auto;
+    flex: 0 0 auto;
+    padding: 10px 14px;
+  }
+
+  .brand-logo {
+    max-width: 125px;
+  }
+
+  .rail-title,
+  .rail-copy,
+  .rail-label,
+  .menu-icon {
+    display: none;
+  }
+
+  .title-content {
+    min-height: 0;
+    padding: clamp(16px, 3vh, 32px) 12px;
   }
 
   .eyebrow {
@@ -359,20 +524,24 @@ a:focus-visible {
   }
 
   .title-description {
+    margin-bottom: 16px;
     font-size: 15px;
   }
 
   .title-footer {
+    margin-top: 16px;
     letter-spacing: 2px;
   }
 
   .game-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
-    margin: 10px auto;
+    margin: 0 auto;
+    padding: 15px;
   }
 
   .hud {
+    min-height: auto;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
@@ -393,8 +562,29 @@ a:focus-visible {
   }
 
   .game-area {
-    min-height: 450px;
-    padding: 20px 12px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 550px;
+    padding: 20px 12px 12px;
+  }
+
+  .actions,
+  .action-rail {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .action-rail .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .action-rail {
+    padding-right: 0;
+  }
+
+  .action-rail button,
+  .ice-preview {
+    min-height: auto;
   }
 
   .actions {

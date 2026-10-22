@@ -53,13 +53,13 @@ function updateUI() {
   $("water-target").textContent = SETTINGS.waterNeeded;
 
   // Update the health bar.
-  $("health-fill").style.width = health + "%";
+  $("health-fill").style.width = `${health}%`;
 
   // Update the water bar.
   const waterPercent =
     (water / SETTINGS.waterNeeded) * 100;
 
-  $("water-fill").style.width = waterPercent + "%";
+  $("water-fill").style.width = `${waterPercent}%`;
 
   // Enable launching only when enough water is collected.
   $("launch-button").disabled =
@@ -96,6 +96,7 @@ function startGame() {
 
   $("play-screen").classList.remove("hidden");
   $("end-screen").classList.add("hidden");
+  $("action-rail").classList.remove("hidden");
 
   showMessage("Mission started! Collect enough water.");
 
@@ -212,6 +213,7 @@ function endGame(won, message) {
   $("game-layout").classList.remove("hidden");
   $("play-screen").classList.add("hidden");
   $("end-screen").classList.remove("hidden");
+  $("action-rail").classList.add("hidden");
 
   // Display the appropriate ending.
   $("end-title").textContent = won

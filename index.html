@@ -20,6 +20,17 @@
        TITLE SCREEN
   =============================== -->
   <section id="title-screen" class="title-screen">
+    <aside class="title-rail" aria-label="Game branding">
+      <img class="brand-logo" src="img/cw_logo_horizontal.png" alt="charity: water">
+      <p class="rail-title">H2O<br>SPACE<br>CASCADE</p>
+      <div class="rail-copy">
+        <p>LIMITLESS<br>WATER FROM<br>SPACE</p>
+        <p>YOU HAVE<br>THE POWER<br>TO CHANGE<br>HUMANITY</p>
+      </div>
+      <span class="menu-icon" aria-hidden="true">☰</span>
+      <span class="rail-label">SETTINGS</span>
+    </aside>
+
     <div class="title-content">
 
       <p class="eyebrow">A CLEAN WATER SPACE MISSION</p>
@@ -32,9 +43,12 @@
         Collect ice. Deliver water. Help change the world.
       </p>
 
-      <button id="start-button" class="start-button">
-        START MISSION →
-      </button>
+      <div class="start-card">
+        <p>ARE YOU READY TO SAVE<br>THE WORLD?</p>
+        <button id="start-button" class="start-button">
+          START MISSION →
+        </button>
+      </div>
 
       <p class="title-footer">YOUR MISSION STARTS HERE</p>
 
@@ -110,8 +124,10 @@
           Fill your supply and deliver it to Earth!
         </p>
 
-        <div class="actions">
+      </div>
 
+      <aside id="action-rail" class="action-rail" aria-label="Mission controls">
+        <div class="actions">
           <button id="shoot-button">
             ❄️ Shoot Ice
           </button>
@@ -119,14 +135,17 @@
           <button id="launch-button" disabled>
             🚀 Deliver Water
           </button>
-
-          <button id="danger-button" class="danger-button">
-            ⚠️ Incoming Ice!
-          </button>
-
         </div>
 
-      </div>
+        <button id="danger-button" class="danger-button">
+          ⚠️ Incoming Ice!
+        </button>
+        <div class="ice-preview" aria-label="Ice field preview">
+          <strong>ICE FIELD<br>PREVIEW</strong>
+          <span>✦</span>
+          <small>Click Shoot Ice<br>to collect water</small>
+        </div>
+      </aside>
 
 
       <!-- END SCREEN -->
