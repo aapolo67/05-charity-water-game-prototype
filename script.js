@@ -30,7 +30,7 @@ const SETTINGS = {
     { name: "Madagascar", x: 61, y: 70 }
   ],
 
-  damagePerHit: 20
+  damagePerHit: 30
 };
 
 

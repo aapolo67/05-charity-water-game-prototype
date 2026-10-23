@@ -6,22 +6,22 @@
 
 :root {
   /* Main colors */
-  --color-space: #000000;
+  --color-space: #1a1a1a;
   --color-space-light: #1d3557;
   --color-panel: #243b53;
-  --color-surface: #f5f7fa;
-  --color-surface-muted: #d2d2d2;
+  --color-surface: #ffffff;
+  --color-surface-muted: #cbccd1;
   --color-text: #102a43;
-  --color-text-light: #f5f7fa;
+  --color-text-light: #fff7e1;
   --color-text-muted: #627d98;
-  --color-accent: #ffcf36;
-  --color-water: #4ba3e3;
+  --color-accent: #ffc907;
+  --color-water: #77a8bb;
   --color-danger: #e76f51;
   --color-track: #334e68;
   --color-border: #bcccdc;
   --color-link: #245f8e;
   --color-shadow: #00000022;
-  --color-rail: #777777;
+  --color-rail: #1a1a1a;
 
   /* Component settings */
   /* Arial matches the simple sans-serif lettering in the wireframe. */
@@ -105,6 +105,7 @@ a:focus-visible {
   padding: 22px 14px;
   background: var(--color-rail);
   color: var(--color-text-light);
+  border: 1px solid var(--color-border);
 }
 
 .brand-logo {
@@ -300,7 +301,7 @@ a:focus-visible {
   height: auto;
   min-height: 0;
   padding: 18px 22px;
-  border: 0;
+  border: 1px solid var(--color-border);
   border-radius: 0;
   background: var(--color-rail);
   color: var(--color-text-light);
