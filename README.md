@@ -35,8 +35,14 @@ Open `script.js` and edit the values in the `SETTINGS` object:
 - `startingTime` controls the length of a mission.
 - `startingHealth` controls the ship's starting health.
 - `waterPerIce` controls how much water one successful shot collects.
-- `waterNeeded` controls how much water is required to win.
+- `waterNeeded` controls how much water is required for each delivery.
 - `pointsPerIce` and `pointsPerDelivery` control scoring.
+- Reaching the target score of 400 points does not end the mission. After the
+  target has been reached, dropping below 400 points or reaching zero health
+  ends the mission with the failure screen. The player can continue playing
+  after passing 400 points. When the timer reaches zero, a score of at least
+  400 points shows the celebratory win screen; otherwise, the failure screen
+  appears.
 - `damagePerHit` controls the damage from incoming ice.
 - `asteroidSpawnTime` controls how often an asteroid appears.
 - `stillAsteroidSpawnTime` controls how often a stationary asteroid appears.

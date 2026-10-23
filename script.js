@@ -5,11 +5,11 @@
 ========================================= */
 
 const SETTINGS = {
-  startingTime: 60,
+  startingTime: 30,
   startingHealth: 100,
 
-  asteroidSpawnTime: 6000,
-  stillAsteroidSpawnTime: 3000,
+  asteroidSpawnTime: 5000,
+  stillAsteroidSpawnTime: 1000,
   maxAsteroids: 14,
   asteroidSpeed: 0.0125,
   warningDistance: 0.01,
@@ -57,6 +57,7 @@ let previewShowing = false;
 let warningActive = false;
 let currentTarget = null;
 let targetSelected = false;
+let targetScoreReached = false;
 
 
 /* =========================================
@@ -112,12 +113,14 @@ function updateUI() {
 
   // Update the health bar.
   elements.healthFill.style.height = `${health}%`;
+  elements.healthFill.style.setProperty("--fill-percent", `${health}%`);
 
   // Update the water bar.
   const waterPercent =
     (water / SETTINGS.waterNeeded) * 100;
 
   elements.waterFill.style.height = `${waterPercent}%`;
+  elements.waterFill.style.setProperty("--fill-percent", `${waterPercent}%`);
 
   renderAsteroids();
 
@@ -153,6 +156,7 @@ function startGame() {
   asteroids = [];
   nextAsteroidId = 1;
   previewShowing = false;
+  targetScoreReached = false;
 
   gameRunning = true;
 
@@ -197,9 +201,18 @@ function startGame() {
     updateUI();
 
     if (timeLeft <= 0) {
-      endGame(false, "Time ran out! Try again.");
+      if (score >= SETTINGS.targetScore) {
+        endGame(
+          true,
+          "You reached the score needed to deliver clean water to countries in need!"
+        );
+      } else {
+        endGame(
+          false,
+          "The mission ended before you reached 400 points."
+        );
+      }
     }
-
 
   }, 1000);
 
@@ -487,15 +500,13 @@ function launchWater() {
 
   // Award delivery points.
   score += SETTINGS.pointsPerDelivery;
+  if (score >= SETTINGS.targetScore) {
+    targetScoreReached = true;
+  }
 
   // Empty the tank so the player can collect water for another delivery.
   water = 0;
   updateUI();
-
-  if (score >= SETTINGS.targetScore) {
-    endGame(true, "You reached the score needed to deliver clean water to countries in need!");
-    return;
-  }
 
   assignNewTarget();
   showMessage(`Delivery complete! New target: ${currentTarget.name}.`);
@@ -519,6 +530,12 @@ function takeDamage() {
   if (health <= 0) {
     updateUI();
     endGame(false, "Your ship ran out of health.");
+    return;
+  }
+
+  if (targetScoreReached && score < SETTINGS.targetScore) {
+    updateUI();
+    endGame(false, "Your score dropped below the target of 400 points.");
     return;
   }
 
