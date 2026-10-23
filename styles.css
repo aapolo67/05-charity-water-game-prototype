@@ -270,13 +270,16 @@ a:focus-visible {
 .game-layout {
   display: grid;
   grid-template-columns: 210px minmax(0, 620px);
-  gap: clamp(45px, 6vw, 85px);
+  grid-template-rows: auto 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(18px, 3vh, 30px) clamp(45px, 6vw, 85px);
   width: max-content;
   max-width: 100%;
   height: 100dvh;
   min-height: 0;
   margin: 0 auto;
-  padding: clamp(18px, 4vh, 40px) 0;
+  padding: clamp(18px, 4vh, 40px) clamp(20px, 8vw, 120px);
 }
 
 .hidden {
@@ -289,14 +292,39 @@ a:focus-visible {
 ========================================= */
 
 .hud {
-  align-self: start;
-  height: 100%;
+  position: relative;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+  width: 100%;
+  height: auto;
   min-height: 0;
-  padding: 28px 22px;
+  padding: 18px 22px;
   border: 0;
   border-radius: 0;
   background: var(--color-rail);
   color: var(--color-text-light);
+}
+
+.status-bars {
+  display: flex;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  color: var(--color-text-light);
+}
+
+.status-bar {
+  display: grid;
+  grid-template-columns: 1fr 20px;
+  column-gap: 6px;
+  align-items: start;
+  width: 60px;
+  margin-bottom: 30px;
 }
 
 .hud-title {
@@ -305,6 +333,7 @@ a:focus-visible {
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .stat {
@@ -325,23 +354,124 @@ a:focus-visible {
   font-size: 12px;
 }
 
+.status-bars .stat-heading {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.status-bars .stat-heading > span {
+  display: block;
+}
+
+.status-bars .stat-heading > span:first-child {
+  width: auto;
+  margin: 0 auto;
+}
+
+.status-bars .stat-heading > .vertical-label {
+  display: flex;
+  width: 1em;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-bars .vertical-label > span {
+  width: 1em;
+  word-break: break-all;
+}
+
+.status-bars .stat-heading > span:last-child {
+  display: none;
+}
+
+.incoming-status-bar {
+  grid-template-columns: 1fr 20px;
+  column-gap: 6px;
+  width: 60px;
+}
+
+.incoming-status-bar .incoming-bar {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.incoming-bar {
+  background: var(--color-text-light);
+}
+
+.incoming-status-bar .incoming-fill {
+  height: 100%;
+  background: var(--color-text-light);
+}
+
+.warning-label {
+  display: flex;
+  grid-column: 1;
+  grid-row: 1;
+  width: 1em;
+  flex-direction: column;
+  gap: 8px;
+  justify-self: center;
+  color: var(--color-text-light);
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.warning-label > span {
+  width: 1em;
+  word-break: break-all;
+}
+
+.incoming-status-bar.warning-active .incoming-fill {
+  animation: warning-bar-flash 0.4s steps(2, start) infinite;
+}
+
+@keyframes warning-bar-flash {
+  0%, 100% {
+    background: var(--color-text-light);
+  }
+
+  50% {
+    background: #ff0000;
+  }
+}
+
 
 /* =========================================
    6. HEALTH AND WATER BARS
 ========================================= */
 
 .bar {
-  width: 100%;
-  height: 14px;
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  width: 20px;
+  height: clamp(160px, 28vh, 260px);
+  align-items: flex-end;
   overflow: hidden;
-  border-radius: 10px;
-  background: var(--color-track);
+  border-radius: 0;
+  background: var(--color-text-light);
+  margin: 0 auto;
+}
+
+.status-bar:first-child .bar {
+  height: clamp(340px, 58vh, 540px);
+}
+
+.incoming-status-bar .incoming-bar {
+  height: clamp(90px, 16vh, 150px);
 }
 
 .bar-fill {
   width: 100%;
-  height: 100%;
-  transition: width 0.25s ease;
+  height: 0;
+  transition: height 0.25s ease;
 }
 
 .health-fill {
@@ -357,12 +487,47 @@ a:focus-visible {
   margin-top: 5px;
 }
 
+.settings-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.settings-button span {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.settings-menu {
+  position: absolute;
+  z-index: 3;
+  right: calc(100% + 8px);
+  bottom: 8px;
+  width: 150px;
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+  background: var(--color-space);
+  box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.settings-menu button {
+  width: 100%;
+  padding: 8px;
+  font-size: 12px;
+}
+
 
 /* =========================================
    7. MAIN GAME AREA
 ========================================= */
 
 .game-area {
+  grid-column: 2;
+  grid-row: 1 / 3;
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -380,6 +545,7 @@ a:focus-visible {
 
 .play-screen,
 .end-screen {
+  position: relative;
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -390,8 +556,6 @@ a:focus-visible {
 
 .actions {
   display: flex;
-  grid-column: 2;
-  grid-row: 1;
   align-content: center;
   flex-direction: column;
   flex-wrap: wrap;
@@ -406,16 +570,16 @@ a:focus-visible {
 
 .action-rail {
   display: flex;
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  right: -75px;
-  width: 150px;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  width: 120px;
   flex-direction: column;
   gap: 20px;
   justify-content: center;
   padding: 0;
-  transform: translateY(-50%);
+  justify-self: end;
+  transform: translateX(calc(100% + 12px));
 }
 
 .action-rail button,
@@ -426,14 +590,14 @@ a:focus-visible {
   border-radius: 0;
   background: var(--color-surface);
   color: var(--color-text);
-  text-align: left;
+  text-align: center;
 }
 
 .ice-preview {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: 16px;
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: inherit;
 }
 
 .ice-preview strong,
@@ -442,8 +606,9 @@ a:focus-visible {
 }
 
 .ice-preview span {
-  color: var(--color-water);
-  font-size: 24px;
+  margin-right: 8px;
+  color: inherit;
+  font-size: inherit;
 }
 
 .ice-preview small {
@@ -460,9 +625,79 @@ a:focus-visible {
 }
 
 .game-earth {
+  position: relative;
+  display: inline-block;
   margin: 25px 0;
-  font-size: clamp(80px, 12vw, 130px);
   filter: drop-shadow(0 5px 8px var(--color-shadow));
+  line-height: 1;
+}
+
+.earth-button {
+  position: relative;
+  display: block;
+  width: clamp(240px, 38vw, 520px);
+  height: clamp(130px, 21vw, 280px);
+  padding: 0;
+  border: 1px solid #123c5a;
+  border-radius: 4px;
+  background: url("World Map.jpg") center / 100% 100% no-repeat;
+  box-shadow: 0 6px 12px var(--color-shadow);
+}
+
+.target-dot {
+  position: absolute;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 2px solid var(--color-text-light);
+  border-radius: 50%;
+  background: var(--color-danger);
+  transform: translate(-50%, -50%);
+}
+
+.target-dot.selected {
+  background: var(--color-danger);
+  box-shadow: 0 0 0 4px var(--color-accent);
+}
+
+.target-dot:hover {
+  background: var(--color-danger);
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.main-game-content {
+  height: 100%;
+}
+
+.asteroid-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+}
+
+.asteroid {
+  position: absolute;
+  z-index: 1;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-water);
+  font-size: 28px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: none;
+}
+
+.asteroid:hover {
+  background: var(--color-accent);
+}
+
+.play-screen.preview-mode .main-game-content {
+  display: none;
 }
 
 .instructions {
@@ -477,10 +712,6 @@ a:focus-visible {
 .action-rail .actions {
   flex-direction: column;
   gap: 12px;
-}
-
-.danger-button {
-  border-color: var(--color-danger);
 }
 
 .message {
@@ -500,17 +731,63 @@ a:focus-visible {
 ========================================= */
 
 .end-earth {
+  position: relative;
+  z-index: 1;
   margin: 15px 0;
   font-size: 85px;
 }
 
 .end-screen h2 {
+  position: relative;
+  z-index: 1;
   font-size: clamp(24px, 4vw, 36px);
   font-weight: 400;
 }
 
 #end-message {
+  position: relative;
+  z-index: 1;
   line-height: 1.6;
+}
+
+.end-screen > p,
+.end-screen > button {
+  position: relative;
+  z-index: 1;
+}
+
+.end-title-button {
+  display: block;
+  margin: 12px auto 0;
+  background: transparent;
+  color: var(--color-text);
+}
+
+.win-screen {
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 14px;
+  animation: confetti-fall linear infinite;
+}
+
+@keyframes confetti-fall {
+  to {
+    top: 110%;
+    transform: rotate(720deg);
+  }
 }
 
 .charity-link {
@@ -534,17 +811,20 @@ a:focus-visible {
   }
 
   .title-screen {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     height: 100dvh;
-    flex-direction: column;
     gap: 15px;
     padding: 10px;
   }
 
   .title-rail {
+    order: 1;
     width: 100%;
-    min-height: auto;
-    flex: 0 0 auto;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
     padding: 10px 14px;
   }
 
@@ -554,13 +834,32 @@ a:focus-visible {
 
   .rail-copy,
   .rail-label,
-  .menu-icon,
-  .rail-title {
+  .menu-icon {
     display: none;
   }
 
+  .title-screen .rail-title {
+    display: block;
+    position: static;
+    margin: -4px 0 0;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: 2px;
+    text-align: center;
+    transform: none;
+  }
+
+  .rail-title span {
+    width: auto;
+    word-break: normal;
+  }
+
   .title-content {
+    order: 2;
+    width: 100%;
+    height: auto;
     min-height: 0;
+    overflow: hidden;
     padding: clamp(16px, 3vh, 32px) 12px;
   }
 
@@ -594,12 +893,46 @@ a:focus-visible {
   }
 
   .hud {
+    grid-column: 1;
+    grid-row: auto;
+    order: 2;
+    align-self: start;
     height: auto;
     min-height: auto;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     padding: 15px;
+  }
+
+  .status-bars {
+    grid-column: 1;
+    grid-row: auto;
+    order: 1;
+    display: flex;
+    align-self: start;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 15px;
+  }
+
+  .bar {
+    height: 180px;
+  }
+
+  .status-bar {
+    grid-template-columns: 1fr 20px;
+    width: 60px;
+    margin-bottom: 0;
+  }
+
+  .incoming-status-bar {
+    width: 60px;
+  }
+
+  .status-bar:first-child .bar {
+    height: 220px;
   }
 
   .hud-title {
@@ -616,6 +949,9 @@ a:focus-visible {
   }
 
   .game-area {
+    grid-column: 1;
+    grid-row: auto;
+    order: 3;
     grid-template-columns: minmax(0, 1fr);
     height: auto;
     min-height: 550px;
@@ -658,6 +994,12 @@ a:focus-visible {
 
   .actions button {
     max-width: 100%;
+  }
+
+  .settings-menu {
+    right: auto;
+    left: 8px;
+    bottom: calc(100% + 8px);
   }
 
   .game-earth {

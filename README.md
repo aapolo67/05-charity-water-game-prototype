@@ -1,8 +1,9 @@
 # H2O Space Cascade
 
 This is a beginner-friendly, DOM-based game prototype inspired by the provided
-charity: water wireframes. The player shoots ice to collect water, avoids
-incoming ice, and delivers enough water to Earth.
+charity: water wireframes. Asteroids appear during a mission. The player opens
+the asteroid field preview, clicks asteroids to collect water, avoids nearby
+moving asteroids, and delivers enough water to Earth.
 
 ## Run the game
 
@@ -37,6 +38,11 @@ Open `script.js` and edit the values in the `SETTINGS` object:
 - `waterNeeded` controls how much water is required to win.
 - `pointsPerIce` and `pointsPerDelivery` control scoring.
 - `damagePerHit` controls the damage from incoming ice.
+- `asteroidSpawnTime` controls how often an asteroid appears.
+- `stillAsteroidSpawnTime` controls how often a stationary asteroid appears.
+- `maxAsteroids` limits the total asteroids visible at one time.
+- `asteroidSpeed` controls how quickly an asteroid reaches the ship.
+- `warningDistance` controls when the incoming asteroid warning appears.
 
 ### Change text and layout
 

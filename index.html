@@ -31,8 +31,6 @@
         <p>LIMITLESS<br>WATER FROM<br>SPACE</p>
         <p>YOU HAVE<br>THE POWER<br>TO CHANGE<br>HUMANITY</p>
       </div>
-      <span class="menu-icon" aria-hidden="true">☰</span>
-      <span class="rail-label">SETTINGS</span>
     </aside>
 
     <div class="title-content">
@@ -79,9 +77,30 @@
         <span><span id="time">60</span>s</span>
       </div>
 
-      <div class="stat">
+      <button id="settings-button" class="settings-button">
+        ☰
+        <span>SETTINGS</span>
+      </button>
+
+      <div id="settings-menu" class="settings-menu hidden">
+        <button id="settings-restart-button" type="button">
+          Restart Mission
+        </button>
+        <button id="settings-title-button" type="button">
+          Return to Title
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- SEPARATE VERTICAL STATUS BARS -->
+    <aside class="status-bars" aria-label="Ship health and water supply">
+      <div class="status-bar">
         <div class="stat-heading">
-          <span>SHIP HEALTH</span>
+          <span class="vertical-label">
+            <span>SH I P</span>
+            <span>HEALTH</span>
+          </span>
           <span><span id="health">100</span>%</span>
         </div>
 
@@ -90,9 +109,12 @@
         </div>
       </div>
 
-      <div class="stat">
+      <div class="status-bar">
         <div class="stat-heading">
-          <span>WATER SUPPLY</span>
+          <span class="vertical-label">
+            <span>WATER</span>
+            <span>LEVEL</span>
+          </span>
           <span><span id="water">0</span>/<span id="water-target">50</span></span>
         </div>
 
@@ -101,10 +123,14 @@
         </div>
       </div>
 
-      <button id="restart-button" class="secondary-button">
-        ↻ Restart Mission
-      </button>
-
+      <div id="incoming-status-bar" class="status-bar incoming-status-bar">
+        <span class="warning-label">
+          <span>DANGER</span>
+        </span>
+        <div class="bar incoming-bar">
+          <div class="bar-fill incoming-fill"></div>
+        </div>
+      </div>
     </aside>
 
 
@@ -114,45 +140,31 @@
       <!-- ACTIVE GAME -->
       <div id="play-screen" class="play-screen">
 
-        <p class="eyebrow dark-eyebrow">MISSION IN PROGRESS</p>
+        <div class="main-game-content">
+          <p class="eyebrow dark-eyebrow">MISSION IN PROGRESS</p>
 
-        <h2>Deliver Water to Earth</h2>
+          <div class="game-earth" aria-label="Earth">
+            <div id="earth-button" class="earth-button">
+            </div>
+            <button id="target-dot" class="target-dot" type="button" aria-label="Select water delivery target"></button>
+          </div>
 
-        <div class="game-earth" aria-label="Earth">🌎</div>
+          <p id="target">TARGET: FIND A COUNTRY IN NEED</p>
 
-        <p id="target">TARGET: EARTH</p>
+          <p class="instructions">
+            Click the red target on Earth to select a country.
+            Collect water, then launch your delivery!
+          </p>
+        </div>
 
-        <p class="instructions">
-          Destroy ice asteroids to collect water.
-          Fill your supply and deliver it to Earth!
-        </p>
+        <div id="asteroid-field" class="asteroid-field hidden" aria-label="Asteroid field"></div>
 
       </div>
 
-      <aside id="action-rail" class="action-rail" aria-label="Mission controls">
-        <div class="actions">
-          <button id="shoot-button">
-            ❄️ SHOOT ICE
-          </button>
-
-          <button id="launch-button" disabled>
-            🚀 MISSILE STRIKE
-          </button>
-        </div>
-
-        <button id="danger-button" class="danger-button">
-          ⚠️ INCOMING ASTEROID!
-        </button>
-        <div class="ice-preview" aria-label="Ice field preview">
-          <strong>ICE FIELD<br>PREVIEW</strong>
-          <span>✦</span>
-          <small>Click Shoot Ice<br>to collect water</small>
-        </div>
-      </aside>
-
-
       <!-- END SCREEN -->
       <div id="end-screen" class="end-screen hidden">
+
+        <div id="confetti" class="confetti" aria-hidden="true"></div>
 
         <div class="end-earth" aria-hidden="true">🌎</div>
 
@@ -164,6 +176,10 @@
 
         <button id="play-again-button" class="start-button">
           PLAY AGAIN →
+        </button>
+
+        <button id="end-title-button" class="end-title-button" type="button">
+          RETURN TO TITLE
         </button>
 
         <p class="charity-link">
@@ -184,6 +200,19 @@
       </p>
 
     </section>
+
+    <aside id="action-rail" class="action-rail" aria-label="Mission controls">
+      <div class="actions">
+        <button id="launch-button" disabled>
+          <span>🚀<br>MISSILE<br>STRIKE</span>
+        </button>
+      </div>
+
+      <button id="ice-preview-button" class="ice-preview" type="button" aria-pressed="false">
+        <span>✦</span>
+        <br><strong>ICE FIELD<br>PREVIEW</strong>
+      </button>
+    </aside>
 
   </main>
 
